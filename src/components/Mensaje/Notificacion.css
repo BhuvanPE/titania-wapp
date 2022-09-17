@@ -1,0 +1,50 @@
+.notify-div {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+body,
+html {
+    overflow: hidden;
+}
+
+.notify-show {
+    opacity: 1;
+    pointer-events: auto;
+    animation: show_slide 1s ease forwards;
+}
+
+@keyframes show_slide {
+    0% {
+        transform: translateX(100%);
+    }
+
+    50% {
+        transform: translateX(-10%);
+    }
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.notify-hide {
+    animation: hide_slide 1s ease forwards;
+}
+
+@keyframes hide_slide {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
