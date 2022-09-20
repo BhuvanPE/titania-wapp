@@ -157,6 +157,7 @@ export const LoginForm = ({ openNotify, showLogin }) => {
 
                   <div className="text-sm">
                     <button
+                      type='button'
                       className={"font-medium text-indigo-600 hover:text-indigo-500" + (showLoader ? " cursor-not-allowed" : "")}
                       disabled={showLoader}
                       onClick={handleChangePwd}
