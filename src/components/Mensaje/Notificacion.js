@@ -44,7 +44,7 @@ export const Notificacion = forwardRef((props, ref) => {
     }
 
     return (
-        <div id='notifyDiv' className="notify-div rounded-lg z-10 p-4 border border-solid border-red-400 bg-red-50">
+        <div id='notifyDiv' className="notify-div rounded-lg z-20 p-4 border border-solid border-red-400 bg-red-50">
             <div className="flex text-center">
                 <XCircleIcon className="h-4 w-4 mr-1 text-red-400" aria-hidden="true" />
                 <span className='text-xs font-normal' style={{

@@ -15,13 +15,12 @@ import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { useLogin } from '../../hooks/useLogin'
 import { useNavigate } from 'react-router-dom'
 import { getLogin } from '../../utils/apiUtil'
-import { assetsImg } from '../../utils/imgUtil'
 
 const navigation = [
     { name: 'Dashboard', href: '/panel/dashboard', icon: HomeIcon, current: false },
     { name: 'Team', href: '#', icon: UsersIcon, current: false },
     { name: 'Registrar CPE', href: '/panel/fn/registrarcpe', icon: FolderIcon, current: false },
-    { name: 'Validar CPE', href: '#', icon: CalendarIcon, current: false },
+    { name: 'Validar CPE', href: '/panel/fn/validarcpe', icon: CalendarIcon, current: false },
     { name: 'Documents', href: '#', icon: InboxIcon, current: false },
     { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
 ]
@@ -30,7 +29,15 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-const imgPath = assetsImg('./iconaccount.png')
+const getLetterName = (name) => {
+    let letter = ''
+    const words = name.split(' ');
+    if (words.length === 2)
+        letter = words[0].charAt(0) + words[1].charAt(0)
+    else if (words.length === 1)
+        letter = words[0].charAt(0)
+    return letter.toUpperCase()
+}
 
 export const Panel = (props) => {
     const { children, pageName } = props
@@ -199,18 +206,15 @@ export const Panel = (props) => {
                                     <span className="sr-only">View notifications</span>
                                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                                 </button>
-                                <span className='text-sm font-semibold text-gray-900 pl-2'>{login.userName}</span>
 
                                 {/* Profile dropdown */}
                                 <Menu as="div" className="relative ml-3">
                                     <div>
                                         <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                                             <span className="sr-only">Open user menu</span>
-                                            <img
-                                                className="h-6 w-6 rounded-full"
-                                                src={imgPath}
-                                                alt=""
-                                            />
+                                            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-500">
+                                                <span className="font-medium leading-none text-white">{getLetterName(login.userName)}</span>
+                                            </span>
                                         </Menu.Button>
                                     </div>
                                     <Transition
@@ -222,11 +226,11 @@ export const Panel = (props) => {
                                         leaveFrom="transform opacity-100 scale-100"
                                         leaveTo="transform opacity-0 scale-95"
                                     >
-                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        className={classNames(active ? 'bg-gray-100 w-full text-left' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left')}
                                                         onClick={handleYourProfile}
                                                     >
                                                         {'Your profile'}
@@ -236,7 +240,7 @@ export const Panel = (props) => {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        className={classNames(active ? 'bg-gray-100 w-full text-left' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left')}
                                                         onClick={handleSettings}
                                                     >
                                                         {'Settings'}
@@ -246,7 +250,7 @@ export const Panel = (props) => {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <button
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        className={classNames(active ? 'bg-gray-100 w-full text-left' : '', 'block px-4 py-2 text-sm text-gray-700 w-full text-left')}
                                                         onClick={handleSignOut}
                                                     >
                                                         {'Sign out'}
@@ -261,7 +265,7 @@ export const Panel = (props) => {
                     </div>
 
                     <main>
-                        <div className="py-3 mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+                        <div className="py-3 mx-auto max-w-7xl px-4 sm:px-6 md:px-8 min-h-screen">
                             {children}
                         </div>
                     </main>
