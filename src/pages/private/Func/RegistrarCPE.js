@@ -7,9 +7,9 @@ import { Breadcrumb } from '../../../components/Panel/Breadcrumb'
 import { SelRcptEmsr } from '../../../components/Panel/SelRcptEmsr'
 
 const people = [
-    { name: 'OC202200000001', title: '01-09-2022', email: 'REGISTRADA', role: '20,000.00' },
-    { name: 'OC202200000002', title: '03-09-2022', email: 'REGISTRADA', role: '1,100.00' },
-    { name: 'OC202200000003', title: '03-09-2022', email: 'REGISTRADA', role: '5,000.00' },
+    { name: 'OC202200000001', title: '01-09-2022', email: 'REGISTRADA', role: '20,000.00', moneda: 'USD' },
+    { name: 'OC202200000002', title: '03-09-2022', email: 'REGISTRADA', role: '1,100.00', moneda: 'PEN' },
+    { name: 'OC202200000003', title: '03-09-2022', email: 'REGISTRADA', role: '5,000.00', moneda: 'USD' },
 ]
 
 export const pageName = 'Registrar CPE'
@@ -92,6 +92,12 @@ export const RegistrarCPE = () => {
                             >
                                 Estado
                             </th>
+                            <th
+                                scope="col"
+                                className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
+                            >
+                                Moneda
+                            </th>
                             <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">
                                 Importe
                             </th>
@@ -114,6 +120,7 @@ export const RegistrarCPE = () => {
                                 </td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{person.title}</td>
                                 <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{person.email}</td>
+                                <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{person.moneda}</td>
                                 <td className="px-3 py-4 text-right text-sm text-gray-500">{person.role}</td>
                                 <td className="py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                     <a href="/" className="text-indigo-600 hover:text-indigo-900">
