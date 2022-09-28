@@ -14,7 +14,7 @@ export const useAxiosLogin = () => {
         if (token && !valToken(token, app))
             token = null
         if (!token) {
-            const endpoint = 'login/renew'
+            const endpoint = 'renew'
             const url = `/${endpoint}?app=${app}&email=${encodeURIComponent(email)}`
             try {
                 const resp = await axiosCookieAPI.get(url)

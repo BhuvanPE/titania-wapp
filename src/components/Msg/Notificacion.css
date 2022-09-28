@@ -6,15 +6,14 @@
     pointer-events: none;
 }
 
-body,
-html {
-    overflow: hidden;
-}
-
 .notify-show {
     opacity: 1;
     pointer-events: auto;
     animation: show_slide 1s ease forwards;
+}
+
+.notify-font {
+    font-family: Euclid, Roboto, Helvetica, Arial, sans-serif;
 }
 
 @keyframes show_slide {

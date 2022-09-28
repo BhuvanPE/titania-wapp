@@ -1,20 +1,37 @@
+import { CalendarIcon, FolderIcon, HomeIcon, InboxIcon, UsersIcon } from '@heroicons/react/24/outline'
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Dashboard, pageName as pnDashboard } from '../pages/private/Dashboard'
-import { RegistrarCPE, pageName as pnRegistrarCPE } from '../pages/private/Func/RegistrarCPE'
-import { ValidarCPE, pageName as pnValidarCPE } from '../pages/private/Func/ValidarCPE'
+import { useLogin } from '../hooks/useLogin'
+import { Dashboard } from '../pages/private/Dashboard'
+import { ConsultarCPE } from '../pages/private/fn/ConsultarCPE'
+import { ProgramarCPE } from '../pages/private/fn/ProgramarCPE'
+import { RegistrarCPE } from '../pages/private/fn/RegistrarCPE'
+import { ValidarCPE } from '../pages/private/fn/ValidarCPE'
 import { Panel } from '../pages/private/Panel'
 
 export const PrivateRouter = () => {
+    const { login } = useLogin()
+
     return (
         <>
             <Routes>
-                <Route path='/fn/validarcpe' element={<Panel pageName={pnValidarCPE}><ValidarCPE /></Panel>} />
-                <Route path='/fn/registrarcpe' element={<Panel pageName={pnRegistrarCPE}><RegistrarCPE /></Panel>} />
-                <Route path='/dashboard' element={<Panel pageName={pnDashboard}><Dashboard /></Panel>} />
-                <Route path='/' element={<Panel pageName={pnDashboard}><Dashboard /></Panel>} />
+                {
+                    privatePages.filter(page => !page.code || (login.ropag && login.ropag.some(rp => rp === page.code))).map((page, index) => (
+                        < Route key={index} path={page.path} element={<Panel pageName={page.pageName}><page.component /></Panel>} />
+                    ))
+                }
                 <Route path='*' element={<Navigate to='/oops' />} />
             </Routes>
         </>
     )
 }
+
+export const privatePages = [
+    { path: '/fn/programarcpe', component: ProgramarCPE, code: 'fnprgcpe', pageName: 'Programar CPE', icon: InboxIcon, order: 5 },
+    { path: '/fn/validarcpe', component: ValidarCPE, code: 'fnvalcpe', pageName: 'Validar CPE', icon: CalendarIcon, order: 4 },
+    { path: '/fn/consultarcpe', component: ConsultarCPE, code: 'fnconcpe', pageName: 'Consultar CPE', icon: FolderIcon, order: 3 },
+    { path: '/fn/registrarcpe', component: RegistrarCPE, code: 'fnprgcpe', pageName: 'Registrar CPE', icon: UsersIcon, order: 2 },
+    { path: '/dashboard', component: Dashboard, code: null, pageName: 'Dashboard', icon: HomeIcon, order: 1 },
+    { path: '/', component: Dashboard, code: null, pageName: 'Dashboard', icon: null, order: null },
+]
+
