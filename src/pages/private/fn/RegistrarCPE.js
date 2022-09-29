@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Notificacion } from '../../../components/Msg/Notificacion'
 import { Loading } from '../../../components/Panel/Loading'
 import { SelRcptEmsr } from '../../../components/Panel/SelRcptEmsr'
@@ -6,23 +6,17 @@ import { useAxiosLogin } from '../../../hooks/useAxiosLogin'
 import { notifyType } from '../../../types/notifyType'
 import { getError } from '../../../utils/apiUtil'
 
-const people = [
-  { name: 'Leslie Alexander', ruc: '@lesliealexander1' },
-  { name: 'Diana Alexander', ruc: '@lesliealexander2' },
-  { name: 'Maria Alexander', ruc: '@lesliealexander3' },
-]
-
 export const RegistrarCPE = () => {
   const axiosPrivateAPI = useAxiosLogin()
   const notifyRef = useRef()
   const [loadPage, setLoadPage] = useState(true)
-  const [rcptEmsr, setRcptEmsr] = useState([])
+  const [rcpt, setRcpt] = useState([])
+  const [emsr, setEmsr] = useState([])
+  const [, setSelectedRcpt] = useState(null)
+  const [, setSelectedEmsr] = useState(null)
 
   useEffect(() => {
-    console.log('useEffect')
-
     let isMounted = true
-    const controller = new AbortController()
 
     const rcptEmsr = async () => {
       let err = null
@@ -31,29 +25,34 @@ export const RegistrarCPE = () => {
       const endpoint = 'lo/lgn/rcptEmsr'
       const url = `/${endpoint}`
       try {
-        const resp = await axiosPrivateAPI.get(url, { signal: controller.signal })
+        const resp = await axiosPrivateAPI.get(url)
         data = resp?.data
       } catch (error) {
         err = getError(error)
+        console.log(error)
       }
       if (data)
-        isMounted && setRcptEmsr(data.rcpt)
+        isMounted && setRcpt(data.rcptEmsr)
       if (err)
         notifyRef.current.handleOpen(err, notifyType.error)
-      setLoadPage(false)
     }
 
     rcptEmsr()
+    setLoadPage(false)
 
     return () => {
       isMounted = false
-      controller.abort()
-
     }
   }, [axiosPrivateAPI])
 
-  const getPeople1 = () => rcptEmsr
-  const getPeople2 = () => people
+  const handleSelectRcpt = useCallback((person) => {
+    setSelectedRcpt(person)
+    setEmsr(person?.emsr ? person.emsr : [])
+  }, [setSelectedRcpt])
+
+  const handleSelectEmsr = useCallback((person) => {
+    setSelectedEmsr(person)
+  }, [setSelectedEmsr])
 
   return (
     <>
@@ -68,8 +67,8 @@ export const RegistrarCPE = () => {
         !loadPage &&
         <>
           <div className='flex justify-start space-x-4 px-3'>
-            <SelRcptEmsr comboLabel="Receptor" getPeople={getPeople1} />
-            <SelRcptEmsr comboLabel="Emisor" getPeople={getPeople2} />
+            <SelRcptEmsr comboLabel="Receptor" people={rcpt} setPerson={handleSelectRcpt} />
+            <SelRcptEmsr comboLabel="Emisor" people={emsr} setPerson={handleSelectEmsr} />
           </div>
           <div className='bg-white mt-3 p-3 rounded-md'>
             RegistrarCPE

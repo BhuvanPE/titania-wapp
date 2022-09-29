@@ -1,17 +1,17 @@
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export const SelRcptEmsr = (props) => {
-    const { comboLabel, getPeople } = props
-    const people = getPeople()
+export const SelRcptEmsr = memo((props) => {
+    const { comboLabel, people, setPerson } = props
+    console.log(comboLabel)
 
     const [query, setQuery] = useState('')
-    const [selectedPerson, setSelectedPerson] = useState()
+    const [selectedPerson, setSelectedPerson] = useState(null)
 
     const filteredPeople =
         query === ''
@@ -23,6 +23,7 @@ export const SelRcptEmsr = (props) => {
     const handleOnChange = (person) => {
         setSelectedPerson(person)
         setQuery('')
+        setPerson(person)
     }
 
     return (
@@ -33,12 +34,12 @@ export const SelRcptEmsr = (props) => {
                 {comboLabel}
             </div>
             <div className='w-full min-w-min max-w-md'>
-                <Combobox as="div" value={selectedPerson} onChange={handleOnChange}>
+                <Combobox as="div" value={selectedPerson} onChange={handleOnChange} by="ruc">
                     <div className="relative">
                         <Combobox.Input
                             className="w-full rounded-r-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                             onChange={(event) => setQuery(event.target.value)}
-                            displayValue={(person) => person?.name}
+                            displayValue={(person) => person?.name ?? ''}
                         />
                         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                             <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -92,4 +93,4 @@ export const SelRcptEmsr = (props) => {
             </div>
         </div>
     )
-}
+})
