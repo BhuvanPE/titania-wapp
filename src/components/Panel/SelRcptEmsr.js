@@ -26,7 +26,7 @@ export const SelRcptEmsr = memo((props) => {
     }
 
     useEffect(() => {
-        const person = people.length > 0 ? people[0] : null
+        const person = people && people.length > 0 ? people[0] : null
         setSelectedPerson(person)
         setQuery('')
         setPerson(person)
