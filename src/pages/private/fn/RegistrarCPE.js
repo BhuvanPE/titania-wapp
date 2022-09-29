@@ -35,10 +35,10 @@ export const RegistrarCPE = () => {
         isMounted && setRcpt(data.rcptEmsr)
       if (err)
         notifyRef.current.handleOpen(err, notifyType.error)
-    }
+        setLoadPage(false)
+      }
 
     rcptEmsr()
-    setLoadPage(false)
 
     return () => {
       isMounted = false

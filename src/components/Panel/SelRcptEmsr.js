@@ -1,6 +1,6 @@
 import { Combobox } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -24,6 +24,13 @@ export const SelRcptEmsr = memo((props) => {
         setQuery('')
         setPerson(person)
     }
+
+    useEffect(() => {
+        const person = people.length > 0 ? people[0] : null
+        setSelectedPerson(person)
+        setQuery('')
+        setPerson(person)
+    }, [people, setPerson])
 
     return (
         <div className='flex basis-96 justify-start'>
