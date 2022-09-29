@@ -361,9 +361,12 @@ export const Home = () => {
                 </a>
                 <p className="mt-6 text-center text-base font-medium text-gray-500">
                   Usuario existente?{' '}
-                  <a href="/" className="text-indigo-600 hover:text-indigo-500">
+                  <button
+                    className="text-indigo-600 hover:text-indigo-500"
+                    onClick={() => handleSignIn(false)}
+                  >
                     Iniciar sesión
-                  </a>
+                  </button>
                 </p>
               </div>
             </div>

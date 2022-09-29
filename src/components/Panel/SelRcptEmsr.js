@@ -12,12 +12,13 @@ export const SelRcptEmsr = memo((props) => {
     const [query, setQuery] = useState('')
     const [selectedPerson, setSelectedPerson] = useState(null)
 
-    const filteredPeople =
+    const filteredPeople = people && people.length > 0 ? (
         query === ''
             ? people
             : people.filter((person) => {
                 return person.name.toLowerCase().includes(query.toLowerCase())
             })
+    ) : []
 
     const handleOnChange = (person) => {
         setSelectedPerson(person)
@@ -26,7 +27,8 @@ export const SelRcptEmsr = memo((props) => {
     }
 
     useEffect(() => {
-        const person = people && people.length > 0 ? people[0] : null
+        const person = people.length > 0 ? people[0] : null
+        console.log(people)
         setSelectedPerson(person)
         setQuery('')
         setPerson(person)
@@ -45,7 +47,7 @@ export const SelRcptEmsr = memo((props) => {
                         <Combobox.Input
                             className="w-full rounded-r-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                             onChange={(event) => setQuery(event.target.value)}
-                            displayValue={(person) => person?.name ?? ''}
+                            displayValue={(person) => person?.name}
                         />
                         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
                             <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
