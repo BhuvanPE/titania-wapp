@@ -12,7 +12,8 @@ export const Login = () => {
   const [showLogin, setShowLogin] = useState(1)
 
   const handleOpen = (err, type) => notifyRef.current.handleOpen(err, type)
-  const handleShow = (comp) => setShowLogin(comp)
+  //const handleShow = (comp) => setShowLogin(comp)
+  const handleShow = () => setShowLogin(1)
 
   return (
     <>

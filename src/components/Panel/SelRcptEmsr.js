@@ -8,7 +8,6 @@ function classNames(...classes) {
 
 export const SelRcptEmsr = memo((props) => {
     const { comboLabel, people, setPerson } = props
-    console.log(comboLabel)
 
     const [query, setQuery] = useState('')
     const [selectedPerson, setSelectedPerson] = useState(null)
