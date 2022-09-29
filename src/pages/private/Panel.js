@@ -38,7 +38,7 @@ export const Panel = (props) => {
   const navigate = useNavigate()
   const { login, setLogin } = useLogin()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
+  
   let curret_nav = null
   const navigation = privatePages
     .filter(page => page.order && (!page.code || (login.ropag && login.ropag.some(rp => rp === page.code))))
@@ -69,7 +69,7 @@ export const Panel = (props) => {
 
   return (
     <>
-      <div className='min-h-screen  bg-gray-200'>
+      <div className='min-h-screen bg-gray-200'>
 
         {/* INI MENU LATERAL OCULTO */}
         <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -276,7 +276,7 @@ export const Panel = (props) => {
           {/* COMPONENTE */}
           <Breadcrumb pageName={curret_nav.name} href={curret_nav.href} />
           <main>
-            <div className="py-3 max-w-7xl px-4">
+            <div className="py-3 px-4">
               {children}
             </div>
           </main>

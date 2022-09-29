@@ -26,7 +26,7 @@ export const SelRcptEmsr = (props) => {
     }
 
     return (
-        <div className='flex basis-96 fjustify-start'>
+        <div className='flex basis-96 justify-start'>
             <div
                 className='flex justify-center items-center bg-indigo-500 px-3 mr-px text-white text-sm font-medium rounded-l-md'
             >
@@ -59,7 +59,7 @@ export const SelRcptEmsr = (props) => {
                                     >
                                         {({ active, selected }) => (
                                             <>
-                                                <div className="flex">
+                                                <div className="flex text-xs">
                                                     <span className={classNames('truncate', selected && 'font-semibold')}>{person.name}</span>
                                                     <span
                                                         className={classNames(

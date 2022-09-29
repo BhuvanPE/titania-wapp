@@ -52,7 +52,6 @@ export const SignInForm = ({ openNotify, showLogin }) => {
             } catch (error) {
                 err = getError(error)
             }
-
             if (data) {
                 const { token, idleTime, ropag } = data
                 const metaToken = jwtDecode(data.token)
