@@ -30,7 +30,7 @@ export const privatePages = [
     { path: '/fn/programarcpe', component: ProgramarCPE, code: 'fnprgcpe', pageName: 'Programar CPE', icon: InboxIcon, order: 5 },
     { path: '/fn/validarcpe', component: ValidarCPE, code: 'fnvalcpe', pageName: 'Validar CPE', icon: CalendarIcon, order: 4 },
     { path: '/fn/consultarcpe', component: ConsultarCPE, code: 'fnconcpe', pageName: 'Consultar CPE', icon: FolderIcon, order: 3 },
-    { path: '/fn/registrarcpe', component: RegistrarCPE, code: 'fnprgcpe', pageName: 'Registrar CPE', icon: UsersIcon, order: 2 },
+    { path: '/fn/registrarcpe', component: RegistrarCPE, code: 'fnregcpe', pageName: 'Registrar CPE', icon: UsersIcon, order: 2 },
     { path: '/dashboard', component: Dashboard, code: null, pageName: 'Dashboard', icon: HomeIcon, order: 1 },
     { path: '/', component: Dashboard, code: null, pageName: 'Dashboard', icon: null, order: null },
 ]
