@@ -38,7 +38,7 @@ export const Panel = (props) => {
   const navigate = useNavigate()
   const { login, setLogin } = useLogin()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  
+
   let curret_nav = null
   const navigation = privatePages
     .filter(page => page.order && (!page.code || (login.ropag && login.ropag.some(rp => rp === page.code))))
@@ -234,7 +234,7 @@ export const Panel = (props) => {
                   <div>
                     <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-700">
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-700">
                         <span className="font-medium leading-none text-white">{getLetterName(login.userName)}</span>
                       </span>
                     </Menu.Button>
