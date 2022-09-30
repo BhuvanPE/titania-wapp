@@ -1,30 +1,32 @@
-import { XCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
+import { CheckCircleIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { msgType } from '../../types/msgType';
 import { notifyType } from '../../types/notifyType';
 
 import "./Notificacion.css";
 
-export const Notificacion = forwardRef((props, ref) => {
-    const [mensaje, setMensaje] = useState('')
+export const NotifyGreen = forwardRef((props, ref) => {
+    const [message, setMessage] = useState('')
 
     useImperativeHandle(
         ref,
         () => ({
             handleOpen(msg, type) {
-                let message = ''
+                let xmessage = ''
+
                 if (type === notifyType.success || type === notifyType.warning)
-                    message = msg.message
+                    xmessage = msg.message
                 else if (type === notifyType.error) {
                     if (msg.oops) {
-                        message = msgType.apiError
+                        xmessage = msgType.apiError
                         if (msg.detail)
                             console.log(msg.detail)
                     }
                     else
-                        message = msg.message
+                        xmessage = msg.message
                 }
-                setMensaje(message)
+
+                setMessage(xmessage)
 
                 const notifyDiv = document.getElementById('notifyDiv');
                 notifyDiv.classList.remove("notify-hide");
@@ -44,11 +46,11 @@ export const Notificacion = forwardRef((props, ref) => {
     }
 
     return (
-        <div id='notifyDiv' className="notify-div rounded-lg z-20 p-4 border border-solid border-red-400 bg-red-50">
+        <div id='notifyDiv' className={`notify-div rounded-lg z-20 p-4 border border-solid border-green-400 bg-green-50`}>
             <div className="flex text-center">
-                <XCircleIcon className="h-4 w-4 mr-1 text-red-400" aria-hidden="true" />
-                <span className='notify-font text-xs font-normal'>{mensaje}</span>
-                <div className="cursor-pointer rounded-md ml-4 hover:bg-red-200 " onClick={handleClose} >
+                <CheckCircleIcon className={`h-4 w-4 mr-1 text-green-400`} aria-hidden="true" />
+                <span className='notify-font text-xs font-normal'>{message}</span>
+                <div className={`cursor-pointer rounded-md ml-4 hover:bg-green-200`} onClick={handleClose} >
                     <XMarkIcon className="h-5 w-5" aria-hidden="true" />
                 </div>
             </div>

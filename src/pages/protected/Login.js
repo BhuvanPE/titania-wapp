@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { ChangePwdForm } from '../../components/Login/ChangePwdForm'
 import { SignInForm } from '../../components/Login/SignInForm'
 import { SignUpForm } from '../../components/Login/SignUpForm'
-import { Notificacion } from '../../components/Msg/Notificacion'
+import { NotifyRed } from '../../components/Msg/NotifyRed'
 import { assetsImg } from '../../utils/imgUtil'
 
 const imgPath = assetsImg('./pagelogin.jpg')
@@ -18,7 +18,7 @@ export const Login = () => {
   return (
     <>
       <div className="flex min-h-full">
-        <Notificacion ref={notifyRef} />
+        <NotifyRed ref={notifyRef} />
         {showLogin === 1 && <SignInForm openNotify={handleOpen} showLogin={handleShow} />}
         {showLogin === 2 && <SignUpForm openNotify={handleOpen} showLogin={handleShow} />}
         {showLogin === 3 && <ChangePwdForm openNotify={handleOpen} showLogin={handleShow} />}

@@ -1,7 +1,7 @@
 import { SearchOutlined } from '@ant-design/icons'
 import { Button, DatePicker, Input, Tooltip } from 'antd'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Notificacion } from '../../../components/Msg/Notificacion'
+import { NotifyYellow } from '../../../components/Msg/NotifyYellow'
 import { Loading } from '../../../components/Panel/Loading'
 import { SelRcptEmsr } from '../../../components/Panel/SelRcptEmsr'
 import { useAxiosLogin } from '../../../hooks/useAxiosLogin'
@@ -16,8 +16,11 @@ export const RegistrarCPE = () => {
   const [loadPage, setLoadPage] = useState(true)
   const [rcpt, setRcpt] = useState([])
   const [emsr, setEmsr] = useState([])
-  const [, setSelectedRcpt] = useState(null)
-  const [, setSelectedEmsr] = useState(null)
+  const [selectedRcpt, setSelectedRcpt] = useState(null)
+  const [selectedEmsr, setSelectedEmsr] = useState(null)
+  const [foFechaIni, setFoFechaIni] = useState(null)
+  const [foFechaFin, setFoFechaFin] = useState(null)
+  const [, setFoNumDocumento] = useState(null)
 
   useEffect(() => {
     let isMounted = true
@@ -58,17 +61,22 @@ export const RegistrarCPE = () => {
     setSelectedEmsr(person)
   }, [setSelectedEmsr])
 
-  const onChangeDate = (date, dateString) => {
-    console.log(date, dateString);
-  }
+  const handleBuscarOC = () => {
+    let err = null
 
-  const onChangeInput = (input) => {
-    console.log(input);
+    if (!selectedRcpt || !selectedEmsr || !foFechaIni || !foFechaFin || true)
+      err = {
+        message: 'Próximamente!',
+        oops: false
+      }
+
+    if (err)
+      notifyRef.current.handleOpen(err, notifyType.success)
   }
 
   return (
     <>
-      <Notificacion ref={notifyRef} />
+      <NotifyYellow ref={notifyRef} />
       {
         loadPage &&
         <div className='mt-5 flex justify-center'>
@@ -87,11 +95,11 @@ export const RegistrarCPE = () => {
               Busca una orden de compra usando los filtros de fecha de emisión y número de documento.
             </p>
             <div className='wapp-filtro flex space-x-2'>
-              <DatePicker placeholder='Fecha inicio' onChange={onChangeDate} />
-              <DatePicker placeholder='Fecha fin' onChange={onChangeDate} />
-              <Input placeholder="Nº de documento" onChange={onChangeInput}  />
+              <DatePicker placeholder='Fecha inicio' onChange={(d,) => setFoFechaIni(d?.toDate() ?? null)} />
+              <DatePicker placeholder='Fecha fin' onChange={(d,) => setFoFechaFin(d?.toDate() ?? null)} />
+              <Input placeholder="Nº de documento" onChange={(e) => setFoNumDocumento(e.target.value)} />
               <Tooltip title="Buscar orden de compra">
-                <Button type="primary" shape="circle" icon={<SearchOutlined />} />
+                <Button type="primary" shape="circle" icon={<SearchOutlined />} onClick={handleBuscarOC} />
               </Tooltip>
             </div>
           </div>
