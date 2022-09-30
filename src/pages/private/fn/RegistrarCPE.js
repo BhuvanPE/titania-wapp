@@ -82,17 +82,16 @@ export const RegistrarCPE = () => {
             <SelRcptEmsr comboLabel="Receptor" people={rcpt} setPerson={handleSelectRcpt} />
             <SelRcptEmsr comboLabel="Emisor" people={emsr} setPerson={handleSelectEmsr} />
           </div>
-
           <div className='bg-white mt-3 p-3 rounded-md'>
             <p className="text-xs text-gray-700 mb-2">
               Busca una orden de compra usando los filtros de fecha de emisión y número de documento.
             </p>
-            <div className='flex space-x-2'>
+            <div className='wapp-filtro flex space-x-2'>
               <DatePicker placeholder='Fecha inicio' onChange={onChangeDate} />
               <DatePicker placeholder='Fecha fin' onChange={onChangeDate} />
-              <Input placeholder="Nº de documento" onChange={onChangeInput} className='filtro-input' />
+              <Input placeholder="Nº de documento" onChange={onChangeInput}  />
               <Tooltip title="Buscar orden de compra">
-                <Button type="primary" shape="circle" icon={<SearchOutlined />} className='filtro-button' />
+                <Button type="primary" shape="circle" icon={<SearchOutlined />} />
               </Tooltip>
             </div>
           </div>
