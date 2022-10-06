@@ -52,6 +52,7 @@ export const RegistrarCPE = () => {
   const notifyRedRef = useRef()
   const notifyYellowRef = useRef()
   const [loadPage, setLoadPage] = useState(true)
+  const [loadBusqOC, setLoadBusqOC] = useState(false)
   const [rcpt, setRcpt] = useState([])
   const [emsr, setEmsr] = useState([])
   const [selectedRcpt, setSelectedRcpt] = useState(null)
@@ -129,6 +130,8 @@ export const RegistrarCPE = () => {
     const fechaIni = foFechaIni.toISOString().split('T')[0]
     const fechaFin = foFechaFin.toISOString().split('T')[0]
 
+    setLoadBusqOC(true)
+
     const endpoint = 'lo/ocp'
     const url = `/${endpoint}?receptorID=${selectedRcpt.ruc}&emisorID=${selectedEmsr.ruc}&fechaIni=${fechaIni}T00:00:00&fechaFin=${fechaFin}T00:00:00&pendiente=${foPendiente.toString()}&page=1&pageSize=20`
     try {
@@ -154,6 +157,8 @@ export const RegistrarCPE = () => {
     }
     if (err)
       notifyRedRef.current.handleOpen(err, notifyType.error)
+
+    setLoadBusqOC(false)
   }
 
   const handleBuscarOCNum = () => {
@@ -201,9 +206,18 @@ export const RegistrarCPE = () => {
                 </Tooltip>
               </div>
             </div>
-            <div className='wapp-tabla-oc mt-3 lg:max-w-4xl'>
-              <Table columns={columns} dataSource={orders} pagination={{ pageSize: 50, }} scroll={{ y: 240, }} bordered />
-            </div>
+            {
+              loadBusqOC &&
+              <div className='mt-5 flex justify-center'>
+                <Loading w='w-8' h='h-8' />
+              </div>
+            }
+            {
+              !loadBusqOC &&
+              <div className='wapp-tabla-oc mt-3 lg:max-w-4xl'>
+                <Table columns={columns} dataSource={orders} pagination={{ pageSize: 50, }} scroll={{ y: 240, }} bordered />
+              </div>
+            }
           </div>
         </>
       }
