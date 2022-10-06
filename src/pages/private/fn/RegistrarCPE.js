@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons'
-import { Button, DatePicker, Input, Switch, Table, Tooltip } from 'antd'
+import { Button, DatePicker, Input, Pagination, Switch, Table, Tooltip } from 'antd'
 import moment from 'moment'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NotifyRed } from '../../../components/Msg/NotifyRed'
@@ -60,9 +60,12 @@ export const RegistrarCPE = () => {
   const [foFechaIni, setFoFechaIni] = useState(null)
   const [foFechaFin, setFoFechaFin] = useState(null)
   const [foPendiente, setFoPendiente] = useState(true)
+  const [foSave, setFoSave] = useState(null)
   const [, setFoNumOC] = useState(null)
   const [orders, setOrders] = useState([])
-  const [, setTotalPages] = useState(0)
+  const [ocTotalDocuments, setOcTotalDocuments] = useState(0)
+  const [ocPageSize, setOcPageSize] = useState(10)
+  const [ocCurrentPage, setOcCurrentPage] = useState(1)
 
   useEffect(() => {
     let isMounted = true
@@ -96,10 +99,16 @@ export const RegistrarCPE = () => {
   const handleSelectRcpt = useCallback((person) => {
     setSelectedRcpt(person)
     setEmsr(person?.emsr ? person.emsr : [])
+    setFoSave(null)
+    setOrders([])
+    setOcTotalDocuments(0)
   }, [setSelectedRcpt])
 
   const handleSelectEmsr = useCallback((person) => {
     setSelectedEmsr(person)
+    setFoSave(null)
+    setOrders([])
+    setOcTotalDocuments(0)
   }, [setSelectedEmsr])
 
   const handleBuscarOCFecha = async () => {
@@ -127,13 +136,13 @@ export const RegistrarCPE = () => {
       return
     }
 
+    setLoadBusqOC(true)
+
     const fechaIni = foFechaIni.toISOString().split('T')[0]
     const fechaFin = foFechaFin.toISOString().split('T')[0]
 
-    setLoadBusqOC(true)
-
     const endpoint = 'lo/ocp'
-    const url = `/${endpoint}?receptorID=${selectedRcpt.ruc}&emisorID=${selectedEmsr.ruc}&fechaIni=${fechaIni}T00:00:00&fechaFin=${fechaFin}T00:00:00&pendiente=${foPendiente.toString()}&page=1&pageSize=20`
+    const url = `/${endpoint}?receptorID=${selectedRcpt.ruc}&emisorID=${selectedEmsr.ruc}&fechaIni=${fechaIni}T00:00:00&fechaFin=${fechaFin}T00:00:00&pendiente=${foPendiente.toString()}&page=1&pageSize=${ocPageSize}`
     try {
       const resp = await axiosPrivateAPI.get(url)
       data = resp?.data
@@ -153,7 +162,14 @@ export const RegistrarCPE = () => {
           totalF: totalFormat.substring(1, totalFormat.length - 1)
         }
       }))
-      setTotalPages(data.totalPages)
+      setOcTotalDocuments(data.totalDocuments)
+      setFoSave({
+        svSelectedRcpt: selectedRcpt,
+        svSelectedEmsr: selectedEmsr,
+        svFoFechaIni: foFechaIni,
+        svFoFechaFin: foFechaFin,
+        svFoPendiente: foPendiente
+      })
     }
     if (err)
       notifyRedRef.current.handleOpen(err, notifyType.error)
@@ -167,6 +183,50 @@ export const RegistrarCPE = () => {
       oops: false
     }
     notifyYellowRef.current.handleOpen(err, notifyType.warning)
+  }
+
+  const handlePagOC = async (page, pageSize) => {
+    if (!foSave)
+      return
+
+    const { svSelectedRcpt, svSelectedEmsr, svFoFechaIni, svFoFechaFin, svFoPendiente } = foSave
+
+    let err = null
+    let data = null
+
+    setLoadBusqOC(true)
+
+    const fechaIni = svFoFechaIni.toISOString().split('T')[0]
+    const fechaFin = svFoFechaFin.toISOString().split('T')[0]
+
+    const endpoint = 'lo/ocp'
+    const url = `/${endpoint}?receptorID=${svSelectedRcpt.ruc}&emisorID=${svSelectedEmsr.ruc}&fechaIni=${fechaIni}T00:00:00&fechaFin=${fechaFin}T00:00:00&pendiente=${svFoPendiente.toString()}&page=${page}&pageSize=${pageSize}`
+    try {
+      const resp = await axiosPrivateAPI.get(url)
+      data = resp?.data
+    } catch (error) {
+      err = getError(error)
+    }
+
+    if (data) {
+      const options = { style: 'currency', currency: 'USD' };
+      const numberFormat = new Intl.NumberFormat('en-US', options);
+      setOrders(data.data.map(oc => {
+        const totalFormat = numberFormat.format(oc.total)
+        return {
+          ...oc,
+          key: oc.numOC,
+          fechaEmisionF: moment(oc.fechaEmision).format('DD/MM/yyyy'),
+          totalF: totalFormat.substring(1, totalFormat.length - 1)
+        }
+      }))
+      setOcTotalDocuments(data.totalDocuments)
+      setOcCurrentPage(page)
+    }
+    if (err)
+      notifyRedRef.current.handleOpen(err, notifyType.error)
+
+    setLoadBusqOC(false)
   }
 
   return (
@@ -214,8 +274,25 @@ export const RegistrarCPE = () => {
             }
             {
               !loadBusqOC &&
-              <div className='wapp-tabla-oc mt-3 lg:max-w-4xl'>
-                <Table columns={columns} dataSource={orders} pagination={{ pageSize: 50, }} scroll={{ y: 240, }} bordered />
+              <div className='lg:max-w-4xl'>
+                <div className='wapp-tabla-oc mt-3'>
+                  <Table
+                    columns={columns}
+                    dataSource={orders}
+                    pagination={false}
+                    scroll={{ y: 330 }}
+                    bordered />
+                </div>
+                <div className='wapp-pag-oc mt-2 flex justify-end'>
+                  <Pagination
+                    defaultCurrent={ocCurrentPage}
+                    total={ocTotalDocuments}
+                    showSizeChanger
+                    showTotal={(total, range) => `${range[0]}-${range[1]} de ${total} ordenes de compra`}
+                    defaultPageSize={ocPageSize}
+                    onChange={handlePagOC}
+                    onShowSizeChange={(_, size) => setOcPageSize(size)} />
+                </div>
               </div>
             }
           </div>
