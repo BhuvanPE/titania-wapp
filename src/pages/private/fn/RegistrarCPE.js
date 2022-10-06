@@ -1,5 +1,6 @@
 import { SearchOutlined } from '@ant-design/icons'
-import { Button, DatePicker, Input, Switch, Tooltip } from 'antd'
+import { Button, DatePicker, Input, Switch, Table, Tooltip } from 'antd'
+import moment from 'moment'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NotifyRed } from '../../../components/Msg/NotifyRed'
 import { NotifyYellow } from '../../../components/Msg/NotifyYellow'
@@ -11,6 +12,40 @@ import { notifyType } from '../../../types/notifyType'
 import { getError } from '../../../utils/apiUtil'
 
 import './RegistrarCPE.css'
+
+const columns = [
+  {
+    title: 'Nº Documento',
+    dataIndex: 'numOC',
+  },
+  {
+    title: 'Fecha',
+    dataIndex: 'fechaEmisionF',
+    width: 120,
+  },
+  {
+    title: 'Estado',
+    dataIndex: 'estado',
+    width: 140,
+  },
+  {
+    title: 'Comprador',
+    dataIndex: 'comprador',
+    width: 160,
+  },
+  {
+    title: 'Moneda',
+    dataIndex: 'monedaISO',
+    width: 90,
+    align: 'center',
+  },
+  {
+    title: 'Total',
+    dataIndex: 'totalF',
+    width: 130,
+    align: 'right',
+  },
+];
 
 export const RegistrarCPE = () => {
   const axiosPrivateAPI = useAxiosLogin()
@@ -24,7 +59,9 @@ export const RegistrarCPE = () => {
   const [foFechaIni, setFoFechaIni] = useState(null)
   const [foFechaFin, setFoFechaFin] = useState(null)
   const [foPendiente, setFoPendiente] = useState(true)
-  const [, setFoNumDocumento] = useState(null)
+  const [, setFoNumOC] = useState(null)
+  const [orders, setOrders] = useState([])
+  const [, setTotalPages] = useState(0)
 
   useEffect(() => {
     let isMounted = true
@@ -101,8 +138,20 @@ export const RegistrarCPE = () => {
       err = getError(error)
     }
 
-    if (data)
-      console.log(data)
+    if (data) {
+      const options = { style: 'currency', currency: 'USD' };
+      const numberFormat = new Intl.NumberFormat('en-US', options);
+      setOrders(data.data.map(oc => {
+        const totalFormat = numberFormat.format(oc.total)
+        return {
+          ...oc,
+          key: oc.numOC,
+          fechaEmisionF: moment(oc.fechaEmision).format('DD/MM/yyyy'),
+          totalF: totalFormat.substring(1, totalFormat.length - 1)
+        }
+      }))
+      setTotalPages(data.totalPages)
+    }
     if (err)
       notifyRedRef.current.handleOpen(err, notifyType.error)
   }
@@ -146,11 +195,14 @@ export const RegistrarCPE = () => {
                 </Tooltip>
               </div>
               <div className='flex items-center space-x-2'>
-                <Input placeholder="Nº de documento" onChange={(e) => setFoNumDocumento(e.target.value)} />
+                <Input placeholder="Nº de documento" onChange={(e) => setFoNumOC(e.target.value)} />
                 <Tooltip title="Buscar orden de compra">
                   <Button type="primary" shape="circle" icon={<SearchOutlined />} onClick={handleBuscarOCNum} />
                 </Tooltip>
               </div>
+            </div>
+            <div className='wapp-tabla-oc mt-3 lg:max-w-4xl'>
+              <Table columns={columns} dataSource={orders} pagination={{ pageSize: 50, }} scroll={{ y: 240, }} bordered />
             </div>
           </div>
         </>
