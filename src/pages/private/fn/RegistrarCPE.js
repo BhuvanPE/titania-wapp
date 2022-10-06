@@ -61,7 +61,7 @@ export const RegistrarCPE = () => {
   const [foFechaFin, setFoFechaFin] = useState(null)
   const [foPendiente, setFoPendiente] = useState(true)
   const [foSave, setFoSave] = useState(null)
-  const [, setFoNumOC] = useState(null)
+  const [foNumOC, setFoNumOC] = useState(null)
   const [orders, setOrders] = useState([])
   const [ocTotalDocuments, setOcTotalDocuments] = useState(0)
   const [ocPageSize, setOcPageSize] = useState(10)
@@ -177,12 +177,56 @@ export const RegistrarCPE = () => {
     setLoadBusqOC(false)
   }
 
-  const handleBuscarOCNum = () => {
-    const err = {
-      message: 'Proximamente!',
-      oops: false
+  const handleBuscarOCNum = async () => {
+    let err = null
+    let data = null
+
+    if (!foNumOC || foNumOC.trim().length === 0)
+      err = {
+        message: msgType.regCpeNoNumOC,
+        oops: false
+      }
+
+    if (err) {
+      notifyYellowRef.current.handleOpen(err, notifyType.warning)
+      return
     }
-    notifyYellowRef.current.handleOpen(err, notifyType.warning)
+
+    setLoadBusqOC(true)
+
+    const endpoint = 'lo/ocp'
+    const url = `/${endpoint}?receptorID=${selectedRcpt.ruc}&emisorID=${selectedEmsr.ruc}&numOC=${foNumOC}`
+    try {
+      const resp = await axiosPrivateAPI.get(url)
+      data = resp?.data
+    } catch (error) {
+      err = getError(error)
+    }
+
+    if (data) {
+      const { success, data: oc } = data
+      if (success) {
+        const options = { style: 'currency', currency: 'USD' };
+        const numberFormat = new Intl.NumberFormat('en-US', options);
+        const totalFormat = numberFormat.format(oc.total)
+        setOrders([{
+          ...oc,
+          key: oc.numOC,
+          fechaEmisionF: moment(oc.fechaEmision).format('DD/MM/yyyy'),
+          totalF: totalFormat.substring(1, totalFormat.length - 1)
+        }])
+        setOcTotalDocuments(1)
+      }
+      else {
+        setOrders([])
+        setOcTotalDocuments(0)
+      }
+      setFoSave(null)
+    }
+    if (err)
+      notifyRedRef.current.handleOpen(err, notifyType.error)
+
+    setLoadBusqOC(false)
   }
 
   const handlePagOC = async (page, pageSize) => {
@@ -266,35 +310,37 @@ export const RegistrarCPE = () => {
                 </Tooltip>
               </div>
             </div>
-            {
-              loadBusqOC &&
-              <div className='mt-5 flex justify-center'>
-                <Loading w='w-8' h='h-8' />
-              </div>
-            }
-            {
-              !loadBusqOC &&
-              <div className='lg:max-w-4xl'>
-                <div className='wapp-tabla-oc mt-3'>
-                  <Table
-                    columns={columns}
-                    dataSource={orders}
-                    pagination={false}
-                    scroll={{ y: 330 }}
-                    bordered />
+            <div className='lg:max-w-4xl'>
+              {
+                loadBusqOC &&
+                <div className='mt-5 flex justify-center'>
+                  <Loading w='w-8' h='h-8' />
                 </div>
-                <div className='wapp-pag-oc mt-2 flex justify-end'>
-                  <Pagination
-                    defaultCurrent={ocCurrentPage}
-                    total={ocTotalDocuments}
-                    showSizeChanger
-                    showTotal={(total, range) => `${range[0]}-${range[1]} de ${total} ordenes de compra`}
-                    defaultPageSize={ocPageSize}
-                    onChange={handlePagOC}
-                    onShowSizeChange={(_, size) => setOcPageSize(size)} />
-                </div>
-              </div>
-            }
+              }
+              {
+                !loadBusqOC &&
+                <>
+                  <div className='wapp-tabla-oc mt-3'>
+                    <Table
+                      columns={columns}
+                      dataSource={orders}
+                      pagination={false}
+                      scroll={{ y: 330 }}
+                      bordered />
+                  </div>
+                  <div className='wapp-pag-oc mt-2 flex justify-end'>
+                    <Pagination
+                      defaultCurrent={ocCurrentPage}
+                      total={ocTotalDocuments}
+                      showSizeChanger
+                      showTotal={(total, range) => `${range[0]}-${range[1]} de ${total} ordenes de compra`}
+                      defaultPageSize={ocPageSize}
+                      onChange={handlePagOC}
+                      onShowSizeChange={(_, size) => setOcPageSize(size)} />
+                  </div>
+                </>
+              }
+            </div>
           </div>
         </>
       }

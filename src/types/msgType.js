@@ -6,4 +6,5 @@ export const msgType = {
     regCpeNoRcpt: 'Seleccione un receptor.',
     regCpeNoEmsr: 'Seleccione un emisor.',
     regCpeNoFecha: 'Seleccione una fecha de inicio y fin.',
+    regCpeNoNumOC: 'Ingrese el número de documento.',
 }
