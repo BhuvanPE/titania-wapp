@@ -36,7 +36,7 @@ export const SelRcptEmsr = memo((props) => {
     return (
         <div className='flex basis-96 justify-start'>
             <div
-                className='flex justify-center items-center bg-indigo-500 px-3 mr-px text-white text-sm font-medium rounded-l-md'
+                className='flex justify-center items-center px-3 mr-px bg-indigo-600 text-indigo-50 text-sm font-medium rounded-l-md'
             >
                 {comboLabel}
             </div>

@@ -3,7 +3,7 @@ import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { msgType } from '../../types/msgType';
 import { notifyType } from '../../types/notifyType';
 
-import "./Notificacion.css";
+import "./NotifyEffect.css";
 
 export const NotifyYellow = forwardRef((props, ref) => {
     const [message, setMessage] = useState('')
@@ -28,7 +28,7 @@ export const NotifyYellow = forwardRef((props, ref) => {
 
                 setMessage(xmessage)
 
-                const notifyDiv = document.getElementById('notifyDiv');
+                const notifyDiv = document.getElementById('notifyYellowDiv');
                 notifyDiv.classList.remove("notify-hide");
                 notifyDiv.classList.add("notify-show");
                 setTimeout(() => {
@@ -40,13 +40,13 @@ export const NotifyYellow = forwardRef((props, ref) => {
     )
 
     const handleClose = () => {
-        const notifyDiv = document.getElementById('notifyDiv');
+        const notifyDiv = document.getElementById('notifyYellowDiv');
         notifyDiv.classList.add("notify-hide");
         notifyDiv.classList.remove("notify-show");
     }
 
     return (
-        <div id='notifyDiv' className={`notify-div rounded-lg z-20 p-4 border border-solid border-yellow-400 bg-yellow-50`}>
+        <div id='notifyYellowDiv' className={`notify-div rounded-lg z-20 p-4 border border-solid border-yellow-400 bg-yellow-50`}>
             <div className="flex text-center">
                 <ExclamationTriangleIcon className={`h-4 w-4 mr-1 text-yellow-400`} aria-hidden="true" />
                 <span className='notify-font text-xs font-normal'>{message}</span>
