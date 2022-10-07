@@ -43,6 +43,10 @@
     background-color: rgb(249 250 251 / var(--tw-bg-opacity)) !important;
 }
 
+.wapp-tabla-oc .ant-table-body>table>colgroup>col:nth-of-type(2) {
+    min-width: 120px !important;
+}
+
 .wapp-tabla-oc .ant-table-tbody .ant-table-cell {
     font-size: 0.75rem !important;
     line-height: 1rem !important;

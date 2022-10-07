@@ -1,11 +1,10 @@
-import { Table } from 'antd'
+import { Spin, Table } from 'antd'
 import moment from 'moment'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import { useAxiosLogin } from '../../hooks/useAxiosLogin'
 import { notifyType } from '../../types/notifyType'
 import { getError } from '../../utils/apiUtil'
 import { NotifyRed } from '../Msg/NotifyRed'
-import { Loading } from './Loading'
 
 const rcColumns = [
     {
@@ -93,7 +92,7 @@ export const ListRcpCpe = memo((props) => {
             {
                 loadPage &&
                 <div className='my-5 flex justify-center'>
-                    <Loading w='w-8' h='h-8' />
+                    <Spin tip='Loading....' />
                 </div>
             }
             {

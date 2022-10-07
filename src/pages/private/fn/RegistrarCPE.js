@@ -1,11 +1,10 @@
 import { SearchOutlined } from '@ant-design/icons'
-import { Button, DatePicker, Input, Pagination, Switch, Table, Tooltip } from 'antd'
+import { Button, DatePicker, Input, Pagination, Spin, Switch, Table, Tooltip } from 'antd'
 import moment from 'moment'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NotifyRed } from '../../../components/Msg/NotifyRed'
 import { NotifyYellow } from '../../../components/Msg/NotifyYellow'
 import { ListRcpCpe } from '../../../components/Panel/ListRcpCpe'
-import { Loading } from '../../../components/Panel/Loading'
 import { SelRcptEmsr } from '../../../components/Panel/SelRcptEmsr'
 import { useAxiosLogin } from '../../../hooks/useAxiosLogin'
 import { msgType } from '../../../types/msgType'
@@ -18,6 +17,7 @@ const ocColumns = [
   {
     title: 'Nº Documento',
     dataIndex: 'numOC',
+    className: 'wapp-tabla-oc-col'
   },
   {
     title: 'Fecha',
@@ -281,7 +281,7 @@ export const RegistrarCPE = () => {
       {
         loadPage &&
         <div className='my-5 flex justify-center'>
-          <Loading w='w-8' h='h-8' />
+          <Spin tip='Loading....' size='large' />
         </div>
       }
       {
@@ -315,7 +315,7 @@ export const RegistrarCPE = () => {
               {
                 loadBusqOC &&
                 <div className='my-5 flex justify-center'>
-                  <Loading w='w-8' h='h-8' />
+                  <Spin tip='Loading....' size='large' />
                 </div>
               }
               {
