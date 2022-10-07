@@ -4,6 +4,7 @@ import moment from 'moment'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { NotifyRed } from '../../../components/Msg/NotifyRed'
 import { NotifyYellow } from '../../../components/Msg/NotifyYellow'
+import { ListRcpCpe } from '../../../components/Panel/ListRcpCpe'
 import { Loading } from '../../../components/Panel/Loading'
 import { SelRcptEmsr } from '../../../components/Panel/SelRcptEmsr'
 import { useAxiosLogin } from '../../../hooks/useAxiosLogin'
@@ -13,7 +14,7 @@ import { getError } from '../../../utils/apiUtil'
 
 import './RegistrarCPE.css'
 
-const columns = [
+const ocColumns = [
   {
     title: 'Nº Documento',
     dataIndex: 'numOC',
@@ -279,7 +280,7 @@ export const RegistrarCPE = () => {
       <NotifyYellow ref={notifyYellowRef} />
       {
         loadPage &&
-        <div className='mt-5 flex justify-center'>
+        <div className='my-5 flex justify-center'>
           <Loading w='w-8' h='h-8' />
         </div>
       }
@@ -313,7 +314,7 @@ export const RegistrarCPE = () => {
             <div className='lg:max-w-4xl'>
               {
                 loadBusqOC &&
-                <div className='mt-5 flex justify-center'>
+                <div className='my-5 flex justify-center'>
                   <Loading w='w-8' h='h-8' />
                 </div>
               }
@@ -322,11 +323,13 @@ export const RegistrarCPE = () => {
                 <>
                   <div className='wapp-tabla-oc mt-3'>
                     <Table
-                      columns={columns}
+                      columns={ocColumns}
                       dataSource={orders}
                       pagination={false}
-                      scroll={{ y: 330 }}
-                      bordered />
+                      scroll={{ y: 350 }}
+                      bordered
+                      size='small'
+                      expandable={{ expandedRowRender: (record) => (<ListRcpCpe record={record} selectedRcpt={selectedRcpt} selectedEmsr={selectedEmsr} />) }} />
                   </div>
                   <div className='wapp-pag-oc mt-2 flex justify-end'>
                     <Pagination
