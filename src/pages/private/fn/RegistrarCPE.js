@@ -17,7 +17,6 @@ const ocColumns = [
   {
     title: 'Nº Documento',
     dataIndex: 'numOC',
-    className: 'wapp-tabla-oc-col'
   },
   {
     title: 'Fecha',
@@ -295,7 +294,7 @@ export const RegistrarCPE = () => {
             <p className="text-xs text-gray-700 mb-2">
               Busca una orden de compra usando los filtros de fecha de emisión o número de documento.
             </p>
-            <div className='wapp-filtro flex space-x-10'>
+            <div className='fnprgcpe-filtro flex space-x-10'>
               <div className='flex items-center space-x-2'>
                 <DatePicker placeholder='Fecha inicio' onChange={(d,) => setFoFechaIni(d?.toDate() ?? null)} />
                 <DatePicker placeholder='Fecha fin' onChange={(d,) => setFoFechaFin(d?.toDate() ?? null)} />
@@ -321,7 +320,7 @@ export const RegistrarCPE = () => {
               {
                 !loadBusqOC &&
                 <>
-                  <div className='wapp-tabla-oc mt-3'>
+                  <div className='fnprgcpe-tabla-oc mt-3'>
                     <Table
                       columns={ocColumns}
                       dataSource={orders}
@@ -331,7 +330,7 @@ export const RegistrarCPE = () => {
                       size='small'
                       expandable={{ expandedRowRender: (record) => (<ListRcpCpe record={record} selectedRcpt={selectedRcpt} selectedEmsr={selectedEmsr} />) }} />
                   </div>
-                  <div className='wapp-pag-oc mt-2 flex justify-end'>
+                  <div className='fnprgcpe-pag-oc mt-2 flex justify-end'>
                     <Pagination
                       defaultCurrent={ocCurrentPage}
                       total={ocTotalDocuments}

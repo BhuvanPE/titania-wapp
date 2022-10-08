@@ -1,26 +1,26 @@
-.wapp-filtro .ant-switch {
+.fnprgcpe-filtro .ant-switch {
     background-color: rgba(0, 0, 0, 0.25) !important;
 }
 
-.wapp-filtro .ant-switch-checked {
+.fnprgcpe-filtro .ant-switch-checked {
     background-color: rgb(79 70 229 / var(--tw-bg-opacity)) !important;
 }
 
-.wapp-filtro .ant-input {
+.fnprgcpe-filtro .ant-input {
     width: 175px !important;
 }
 
-.wapp-filtro .ant-btn-primary {
+.fnprgcpe-filtro .ant-btn-primary {
     background: rgb(79 70 229 / var(--tw-bg-opacity)) !important;
     border-color: rgb(79 70 229 / var(--tw-bg-opacity)) !important;
 }
 
-.wapp-filtro .ant-btn-primary:hover {
+.fnprgcpe-filtro .ant-btn-primary:hover {
     background-color: rgb(67 56 202 / var(--tw-bg-opacity)) !important;
     border-color: rgb(67 56 202 / var(--tw-bg-opacity)) !important;
 }
 
-.wapp-filtro .ant-btn-primary:focus {
+.fnprgcpe-filtro .ant-btn-primary:focus {
     outline: 2px solid transparent !important;
     outline-offset: 2px !important;
     background-color: rgb(67 56 202 / var(--tw-bg-opacity)) !important;
@@ -33,7 +33,7 @@
     --tw-ring-offset-width: 2px !important;
 }
 
-.wapp-tabla-oc .ant-table-thead .ant-table-cell {
+.fnprgcpe-tabla-oc .ant-table-thead .ant-table-cell {
     font-size: 0.75rem !important;
     line-height: 1rem !important;
     font-weight: 600 !important;
@@ -43,19 +43,19 @@
     background-color: rgb(249 250 251 / var(--tw-bg-opacity)) !important;
 }
 
-.wapp-tabla-oc .ant-table-body>table>colgroup>col:nth-of-type(2) {
+.fnprgcpe-tabla-oc .ant-table-body>table>colgroup>col:nth-of-type(2) {
     min-width: 120px !important;
 }
 
-.wapp-tabla-oc .ant-table-tbody .ant-table-cell {
+.fnprgcpe-tabla-oc .ant-table-tbody .ant-table-cell {
     font-size: 0.75rem !important;
     line-height: 1rem !important;
 }
 
-.wapp-pag-oc .ant-pagination-prev .anticon {
+.fnprgcpe-pag-oc .ant-pagination-prev .anticon {
     vertical-align: 0.125em !important;
 }
 
-.wapp-pag-oc .ant-pagination-next .anticon {
+.fnprgcpe-pag-oc .ant-pagination-next .anticon {
     vertical-align: 0.125em !important;
 }

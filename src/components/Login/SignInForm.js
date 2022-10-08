@@ -38,9 +38,14 @@ export const SignInForm = ({ openNotify, showLogin }) => {
         let err = null
         let data = null
 
-        if (email === '' || password === '')
+        if (email === '')
             err = {
-                message: msgType.loNoEmailPwd,
+                message: msgType.loNoEmail,
+                oops: false
+            }
+        else if (password === '')
+            err = {
+                message: msgType.loNoPwd,
                 oops: false
             }
         else {
